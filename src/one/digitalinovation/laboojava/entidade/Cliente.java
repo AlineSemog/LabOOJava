@@ -1,24 +1,15 @@
 package one.digitalinovation.laboojava.entidade;
 
-/**
- * Classe que representa a entidade cliente. Este pode fazer um pedido.
- * @author thiago leite
- */
+
 public class Cliente {
 
-    /**
-     * Nome completo do cliente.
-     */
     private String nome;
 
-    /**
-     * Número de CPF(Cadastro de Pessoa Física) do cliente.
-     */
     private String cpf;
 
     public Cliente() {
-        this.nome = "Fulano";
-        this.cpf = "123456789011";
+        this.nome = "Aline";
+        this.cpf = "15618815615";
     }
 
     public String getNome() {

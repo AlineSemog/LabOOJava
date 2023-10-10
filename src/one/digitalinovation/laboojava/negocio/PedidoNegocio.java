@@ -4,25 +4,15 @@ import one.digitalinovation.laboojava.basedados.Banco;
 import one.digitalinovation.laboojava.entidade.Cupom;
 import one.digitalinovation.laboojava.entidade.Pedido;
 import one.digitalinovation.laboojava.entidade.Produto;
-
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Classe para manipular a entidade {@link Pedido}.
- * @author thiago leite
- */
+
 public class PedidoNegocio {
 
-    /**
-     * {@inheritDoc}.
-     */
     private Banco bancoDados;
 
-    /**
-     * Construtor.
-     * @param banco Banco de dados para ter armazenar e ter acesso os pedidos
-     */
+
     public PedidoNegocio(Banco banco) {
         this.bancoDados = banco;
     }
@@ -42,36 +32,25 @@ public class PedidoNegocio {
 
     }
 
-    /**
-     * Salva um novo pedido sem cupom de desconto.
-     * @param novoPedido Pedido a ser armazenado
-     */
+   
     public void salvar(Pedido novoPedido) {
         salvar(novoPedido, null);
     }
 
-    /**
-     * Salva um novo pedido com cupom de desconto.
-     * @param novoPedido Pedido a ser armazenado
-     * @param cupom Cupom de desconto a ser utilizado
-     */
+  
     public void salvar(Pedido novoPedido, Cupom cupom) {
 
-        //Definir padrão código
-        //Pegar data do dia corrente
-        //Formatar código
+        String codigo = "PE%4d%2d%04d";
+        LocalDate hoje = LocalDate.now();
+        codigo = String.format(codigo, hoje.getYear(), hoje.getMonthValue(), bancoDados.getPedidos().length);
 
-        //Setar código no pedido
-        //Setar cliente no pedido
-        //Calcular e set total
-        //Adicionar no banco
-        //Mensagem
+        novoPedido.setCodigo(codigo);
+        novoPedido.setCliente(bancoDados.getCliente());
+        novoPedido.setTotal(calcularTotal(novoPedido.getProdutos(), cupom));
+        bancoDados.adicionarPedido(novoPedido);
+        System.out.println("Pedido cadastrado com sucesso.");
     }
 
-    /**
-     * Exclui um pedido a partir de seu código de rastreio.
-     * @param codigo Código do pedido
-     */
     public void excluir(String codigo) {
 
         int pedidoExclusao = -1;
@@ -92,9 +71,16 @@ public class PedidoNegocio {
         }
     }
 
-    /**
-     * Lista todos os pedidos realizados.
-     */
-    //TODO Método de listar todos os pedidos
+    public void listarTodos() {
+
+        if (bancoDados.getPedidos().length == 0) {
+            System.out.println("Não existem pedidos cadastrados");
+        } else {
+
+            for (Pedido pedido: bancoDados.getPedidos()) {
+                System.out.println(pedido.toString());
+            }
+        }
+    }
 
 }
